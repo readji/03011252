@@ -1,58 +1,19 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>랜딩페이지</title>
-</head>
-<body>
-    <h1>랜딩페이지</h1>
-    <img id="landingImage" src="" alt="랜딩페이지 이미지" width="300"><br>
-    
-    <form id="landingForm">
-        <input type="text" id="name" placeholder="이름 입력"><br>
-        <input type="email" id="email" placeholder="이메일 입력"><br>
-        <input type="text" id="phone" placeholder="전화번호 입력"><br>
-        <button type="button" onclick="submitData()">제출</button>
-    </form>
+<script>
+    function loadLandingPage() {
+        const params = new URLSearchParams(window.location.search);
+        const imageUrl = params.get("image");
+        const nameCheck = params.get("name") === "true";
+        const emailCheck = params.get("email") === "true";
+        const phoneCheck = params.get("phone") === "true";
 
-    <script>
-        function loadLandingPage() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get("id");
-
-            const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
-            const page = landingData.find(p => p.id === id);
-
-            if (page) {
-                document.getElementById("landingImage").src = page.imageUrl;
-                
-                if (!page.nameCheck) document.getElementById("name").style.display = "none";
-                if (!page.emailCheck) document.getElementById("email").style.display = "none";
-                if (!page.phoneCheck) document.getElementById("phone").style.display = "none";
-            } else {
-                document.body.innerHTML = "<h1>존재하지 않는 랜딩페이지입니다.</h1>";
-            }
+        if (imageUrl) {
+            document.getElementById("landingImage").src = decodeURIComponent(imageUrl);
         }
 
-        function submitData() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get("id");
+        if (!nameCheck) document.getElementById("name").style.display = "none";
+        if (!emailCheck) document.getElementById("email").style.display = "none";
+        if (!phoneCheck) document.getElementById("phone").style.display = "none";
+    }
 
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-
-            const entry = { name, email, phone };
-
-            const dbData = JSON.parse(localStorage.getItem(`db_${id}`)) || [];
-            dbData.push(entry);
-            localStorage.setItem(`db_${id}`, JSON.stringify(dbData));
-
-            alert("제출되었습니다!");
-        }
-
-        window.onload = loadLandingPage;
-    </script>
-</body>
-</html>
+    window.onload = loadLandingPage;
+</script>
