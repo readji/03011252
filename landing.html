@@ -1,27 +1,58 @@
-<script>
-    function loadLandingPage() {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜딩페이지</title>
+</head>
+<body>
+    <h1>랜딩페이지</h1>
+    <img id="landingImage" src="" alt="랜딩페이지 이미지" width="300"><br>
+    
+    <form id="landingForm">
+        <input type="text" id="name" placeholder="이름 입력"><br>
+        <input type="email" id="email" placeholder="이메일 입력"><br>
+        <input type="text" id="phone" placeholder="전화번호 입력"><br>
+        <button type="button" onclick="submitData()">제출</button>
+    </form>
 
-        const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
-        const page = landingData.find(p => p.id === id);
+    <script>
+        function loadLandingPage() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
 
-        if (page) {
-            console.log("저장된 이미지 URL:", page.imageUrl); // 🔍 디버깅용
+            const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
+            const page = landingData.find(p => p.id === id);
 
-            const imgElement = document.getElementById("landingImage");
-            imgElement.src = page.imageUrl;
-            imgElement.onerror = function () {
-                imgElement.src = "https://via.placeholder.com/300?text=이미지+로드+실패";
-            };
-
-            if (!page.nameCheck) document.getElementById("name").style.display = "none";
-            if (!page.emailCheck) document.getElementById("email").style.display = "none";
-            if (!page.phoneCheck) document.getElementById("phone").style.display = "none";
-        } else {
-            document.body.innerHTML = "<h1>존재하지 않는 랜딩페이지입니다.</h1>";
+            if (page) {
+                document.getElementById("landingImage").src = page.imageUrl;
+                
+                if (!page.nameCheck) document.getElementById("name").style.display = "none";
+                if (!page.emailCheck) document.getElementById("email").style.display = "none";
+                if (!page.phoneCheck) document.getElementById("phone").style.display = "none";
+            } else {
+                document.body.innerHTML = "<h1>존재하지 않는 랜딩페이지입니다.</h1>";
+            }
         }
-    }
 
-    window.onload = loadLandingPage;
-</script>
+        function submitData() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            const entry = { name, email, phone };
+
+            const dbData = JSON.parse(localStorage.getItem(`db_${id}`)) || [];
+            dbData.push(entry);
+            localStorage.setItem(`db_${id}`, JSON.stringify(dbData));
+
+            alert("제출되었습니다!");
+        }
+
+        window.onload = loadLandingPage;
+    </script>
+</body>
+</html>
