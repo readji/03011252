@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB 확인</title>
+</head>
+<body>
+    <h1>DB 보기</h1>
+    <input type="text" id="landingId" placeholder="랜딩페이지 ID 입력">
+    <button onclick="showDB()">조회</button>
+    
+    <h2>DB 데이터</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+            </tr>
+        </thead>
+        <tbody id="dbTable"></tbody>
+    </table>
+
+    <script>
+        function showDB() {
+            const id = document.getElementById("landingId").value;
+            const dbData = JSON.parse(localStorage.getItem(`db_${id}`)) || [];
+
+            const table = document.getElementById("dbTable");
+            table.innerHTML = dbData.map(entry => `
+                <tr>
+                    <td>${entry.name || "-"}</td>
+                    <td>${entry.email || "-"}</td>
+                    <td>${entry.phone || "-"}</td>
+                </tr>
+            `).join("");
+        }
+    </script>
+</body>
+</html>
