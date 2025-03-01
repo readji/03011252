@@ -16,6 +16,8 @@
         document.getElementById("result").innerHTML = `
             <p>랜딩페이지 생성 완료!</p>
             <a href="${url}" target="_blank">랜딩페이지 보기</a>
+            <p>👇 아래 주소를 복사해서 공유하세요!</p>
+            <input type="text" value="${url}" readonly style="width:100%;" onclick="this.select();">
         `;
     }
 </script>
