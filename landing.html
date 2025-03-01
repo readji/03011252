@@ -19,22 +19,28 @@
     <script>
         function loadLandingPage() {
             const params = new URLSearchParams(window.location.search);
-            const imageUrl = params.get("image");
-            const nameCheck = params.get("name") === "true";
-            const emailCheck = params.get("email") === "true";
-            const phoneCheck = params.get("phone") === "true";
+            const id = params.get("id");
 
-            // 🎯 만약 URL에서 이미지 주소를 못 가져오면 오류 메시지 표시
-            if (!imageUrl) {
+            if (!id) {
                 document.body.innerHTML = "<h1>존재하지 않는 랜딩페이지입니다.</h1>";
                 return;
             }
 
-            document.getElementById("landingImage").src = decodeURIComponent(imageUrl);
+            const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
+            const page = landingData.find(p => p.id === id);
 
-            if (!nameCheck) document.getElementById("name").style.display = "none";
-            if (!emailCheck) document.getElementById("email").style.display = "none";
-            if (!phoneCheck) document.getElementById("phone").style.display = "none";
+            if (!page) {
+                document.body.innerHTML = "<h1>존재하지 않는 랜딩페이지입니다.</h1>";
+                return;
+            }
+
+            // 이미지 설정
+            document.getElementById("landingImage").src = page.imageUrl;
+
+            // 체크된 항목만 표시
+            if (!page.nameCheck) document.getElementById("name").style.display = "none";
+            if (!page.emailCheck) document.getElementById("email").style.display = "none";
+            if (!page.phoneCheck) document.getElementById("phone").style.display = "none";
         }
 
         function submitData() {
