@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜딩페이지 관리</title>
+</head>
+<body>
+    <h1>랜딩페이지 관리</h1>
+    <button onclick="location.href='create.html'">랜딩페이지 만들기</button>
+    <button onclick="location.href='db.html'">DB 보기</button>
+    <h2>생성된 랜딩페이지</h2>
+    <ul id="landingList"></ul>
+
+    <script>
+        function loadLandingPages() {
+            const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
+            const list = document.getElementById("landingList");
+            list.innerHTML = "";
+
+            landingData.forEach(page => {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="landing.html?id=${page.id}" target="_blank">${page.id} - ${page.imageUrl}</a>`;
+                list.appendChild(li);
+            });
+        }
+
+        window.onload = loadLandingPages;
+    </script>
+</body>
+</html>
