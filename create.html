@@ -1,46 +1,21 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>랜딩페이지 생성</title>
-</head>
-<body>
-    <h1>랜딩페이지 생성</h1>
-    <input type="text" id="imageUrl" placeholder="이미지 주소 입력"><br>
-    
-    <h3>받을 정보 선택</h3>
-    <input type="checkbox" id="nameCheck"> 이름 <br>
-    <input type="checkbox" id="emailCheck"> 이메일 <br>
-    <input type="checkbox" id="phoneCheck"> 전화번호 <br>
+<script>
+    function createLandingPage() {
+        const imageUrl = document.getElementById("imageUrl").value;
+        const nameCheck = document.getElementById("nameCheck").checked;
+        const emailCheck = document.getElementById("emailCheck").checked;
+        const phoneCheck = document.getElementById("phoneCheck").checked;
 
-    <button onclick="createLandingPage()">랜딩페이지 생성</button>
-    <p id="result"></p>
-
-    <script>
-        function createLandingPage() {
-            const imageUrl = document.getElementById("imageUrl").value;
-            const nameCheck = document.getElementById("nameCheck").checked;
-            const emailCheck = document.getElementById("emailCheck").checked;
-            const phoneCheck = document.getElementById("phoneCheck").checked;
-
-            if (!imageUrl || (!nameCheck && !emailCheck && !phoneCheck)) {
-                alert("이미지 주소를 입력하고 받을 정보를 최소 1개 선택하세요.");
-                return;
-            }
-
-            const id = Date.now().toString();
-            const newPage = { id, imageUrl, nameCheck, emailCheck, phoneCheck };
-
-            const landingData = JSON.parse(localStorage.getItem("landingPages")) || [];
-            landingData.push(newPage);
-            localStorage.setItem("landingPages", JSON.stringify(landingData));
-
-            document.getElementById("result").innerHTML = `
-                <p>랜딩페이지 생성 완료!</p>
-                <a href="landing.html?id=${id}" target="_blank">랜딩페이지 보기</a>
-            `;
+        if (!imageUrl || (!nameCheck && !emailCheck && !phoneCheck)) {
+            alert("이미지 주소를 입력하고 받을 정보를 최소 1개 선택하세요.");
+            return;
         }
-    </script>
-</body>
-</html>
+
+        const id = Date.now().toString();
+        const url = `landing.html?id=${id}&image=${encodeURIComponent(imageUrl)}&name=${nameCheck}&email=${emailCheck}&phone=${phoneCheck}`;
+
+        document.getElementById("result").innerHTML = `
+            <p>랜딩페이지 생성 완료!</p>
+            <a href="${url}" target="_blank">랜딩페이지 보기</a>
+        `;
+    }
+</script>
